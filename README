@@ -22,6 +22,7 @@ docker push alahari9/asset-testing:latest
 # create a helm/templates directory
 mkdir -p helm/templates
 kubectl create deployment asset-testing-deployment --image alahari9/asset-testing:latest -o yaml --dry-run=client > helm/templates/deployment.yaml
+
 #make sure docker is running in your local before executing below command
 kubectl apply -f helm/templates/deployment.yaml
 ```
@@ -29,6 +30,10 @@ kubectl apply -f helm/templates/deployment.yaml
 ```shell
 #to test the application create Nodeport and verify
 kubectl create service nodeport asset-testing-np  --tcp=3030:8080 -o yaml --dry-run=client > helm/templates/nodeport.yaml
+
+# Create a service for an nginx deployment, which serves on port 80 and connects to the containers on port 8000
+kubectl expose deployment asset-testing-deployment --type=NodePort --port=8080 -o yaml --dry-run=client > helm/templates/nodeport.yaml
+
 kubectl apply -f helm/templates/nodeport.yaml
 #Get the nodeport and verify
 kubectl get svc
