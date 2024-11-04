@@ -34,6 +34,8 @@ kubectl create service nodeport asset-testing-np  --tcp=3030:8080 -o yaml --dry-
 # Create a service for an nginx deployment, which serves on port 80 and connects to the containers on port 8000
 kubectl expose deployment asset-testing-deployment --type=NodePort --port=8080 -o yaml --dry-run=client > helm/templates/nodeport.yaml
 
+kubectl expose deployment asset-testing-deployment --type=LoadBalancer --port=8080 -o yaml --dry-run=client > helm/templates/loadbalancer.yaml
+
 kubectl apply -f helm/templates/nodeport.yaml
 #Get the nodeport and verify
 kubectl get svc
